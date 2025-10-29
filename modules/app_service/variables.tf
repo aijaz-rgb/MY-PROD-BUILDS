@@ -34,4 +34,4 @@ variable "tags" {
 variable "allowed_public_ip {
   description = "This is the only public ip allowed to connect to the site"
   type = string
-}"
+}

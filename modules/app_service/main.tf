@@ -25,7 +25,7 @@ resource "azurerm_linux_web_app" "this" {
 
     }
     ip_restriction {
-      name = :"DenyAllOtherPublicIPs"
+      name = "DenyAllOtherPublicIPs"
       priority = 200
       ip_address = "0.0.0.0/0"
       action = "Deny"
