@@ -42,7 +42,7 @@ module "app_service" {
   sku_name              = "B1"
   app_service_name      = "app-genaisearch-deva-uaenorth-001"
   allowed_public_ip     = "194.170.173.3/32"
-  app_service_subnet_id = module.vnet.subnet_id_out
+  
 
   tags = {
     Environment         = "Dev"
