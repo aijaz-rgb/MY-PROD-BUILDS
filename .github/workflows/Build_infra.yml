@@ -26,6 +26,10 @@ jobs:
   terraform:
     name: 'Terraform Plan & Apply'
     runs-on: ubuntu-latest
+    # 1. SET THE DEFAULT WORKING DIRECTORY HERE:
+    defaults:
+      run:
+        working-directory: environments/${{ github.event.inputs.environment }} # OR just 'environments/dev' if not using inputs
     
     # Set the working directory dynamically based on user input
 
@@ -44,11 +48,7 @@ jobs:
         with:
           ref: ${{ github.event.inputs.branch }}
 
-      - name: Set Working Directory
-        run: |
-          cd environments/${{ github.event.inputs.environment }}
-          echo "CURRENT_DIR=$(pwd)" >> $GITHUB_ENV    
-
+     
       # 2. Setup Terraform CLI
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
