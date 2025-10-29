@@ -46,16 +46,18 @@ jobs:
       - name: Terraform Init (Load Remote State)
         run: terraform init
 
+      - name: Force Unlock Terraform State
+        id: force_unlock
+        shell: bash
+        run: terraform force-unlock de5520ce-d225-5b81-f1f3-b21df15a1925
+
       # 2. Terraform Destroy Plan (Show what will be destroyed)
       - name: Terraform Destroy Plan
         id: destroy_plan
         run: terraform plan -destroy -no-color -out=destroyplan -lock-timeout=15m
 
       # 3. Confirmation and Apply (Final step to delete resources)
-      - name: Force Unlock Terraform State
-        id: force_unlock
-        shell: bash
-        run: terraform force-unlock de5520ce-d225-5b81-f1f3-b21df15a1925
+      
       - name: Terraform Destroy Apply
         id: destroy
         # The '-auto-approve' flag ensures it runs without human confirmation inside the workflow.
