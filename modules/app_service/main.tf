@@ -30,6 +30,8 @@ resource "azurerm_linux_web_app" "this" {
       ip_address = "0.0.0.0/0"
       action = "Deny"
     }
+
+    virtual_network_subnet_id=var.app_service_subnet_id
     application_stack {
       dotnet_version = "8.0"
     }
