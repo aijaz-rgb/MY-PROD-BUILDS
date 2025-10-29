@@ -49,7 +49,7 @@ jobs:
       - name: Force Unlock Terraform State
         id: force_unlock
         shell: bash
-        run: terraform force-unlock de5520ce-d225-5b81-f1f3-b21df15a1925
+        run: echo 'yes' | terraform force-unlock de5520ce-d225-5b81-f1f3-b21df15a1925
 
       # 2. Terraform Destroy Plan (Show what will be destroyed)
       - name: Terraform Destroy Plan
