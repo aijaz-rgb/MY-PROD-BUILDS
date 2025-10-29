@@ -40,7 +40,7 @@ module "app_service" {
   location              = module.resource_group.resource_group_location_out
   app_service_plan_name = "plan-genaisearch-dev-uaenorth-001"
   sku_name              = "B1"
-  app_service_name      = "app-genaisearch-dev-uaenorth-001"
+  app_service_name      = "app-genaisearch-deva-uaenorth-001"
 
   tags = {
     Environment         = "Dev"
