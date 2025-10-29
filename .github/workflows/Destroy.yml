@@ -56,5 +56,5 @@ jobs:
         id: destroy
         # The '-auto-approve' flag ensures it runs without human confirmation inside the workflow.
         # This is typically acceptable for a manually triggered destroy job.
-        run: terraform destroy
+        run: terraform destroy -auto-approve
         
