@@ -41,6 +41,7 @@ module "app_service" {
   app_service_plan_name = "plan-genaisearch-dev-uaenorth-001"
   sku_name              = "B1"
   app_service_name      = "app-genaisearch-deva-uaenorth-001"
+  allowed_public_ip     = "194.170.173.3/32"
 
   tags = {
     Environment         = "Dev"

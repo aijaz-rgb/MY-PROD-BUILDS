@@ -17,6 +17,19 @@ resource "azurerm_linux_web_app" "this" {
 
   site_config {
     always_on = true
+    ip_restriction {
+      name = "AllowSpecificIP"
+      priority = 100
+      ip_address = var.allowed_public_ip
+      action = "Allow"
+
+    }
+    ip_restriction {
+      name = :"DenyAllOtherPublicIPs"
+      priority = 200
+      ip_address = "0.0.0.0/0"
+      action = "Deny"
+    }
     application_stack {
       dotnet_version = "8.0"
     }
