@@ -52,10 +52,13 @@ jobs:
         run: terraform plan -destroy -no-color -out=destroyplan -lock-timeout=15m
 
       # 3. Confirmation and Apply (Final step to delete resources)
+      - name: Force Unlock Terraform State
+        id: force_unlock
+        shell: bash
+        run: terraform force-unlock de5520ce-d225-5b81-f1f3-b21df15a1925
       - name: Terraform Destroy Apply
         id: destroy
         # The '-auto-approve' flag ensures it runs without human confirmation inside the workflow.
         # This is typically acceptable for a manually triggered destroy job.
-        run: terraform force-unlock de5520ce-d225-5b81-f1f3-b21df15a1925
         run: terraform destroy -auto-approve
         
