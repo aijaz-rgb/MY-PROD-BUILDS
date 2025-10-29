@@ -14,7 +14,7 @@ resource "azurerm_linux_web_app" "this" {
   location            = var.location
   service_plan_id     = azurerm_service_plan.this.id
   tags                = var.tags
-  app_service_subnet_id = module.vnet.subnet_id_out
+  
 
   site_config {
     always_on = true
