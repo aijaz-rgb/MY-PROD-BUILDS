@@ -36,7 +36,3 @@ variable "allowed_public_ip" {
   type = string
 }
 
-variable "app_service_subnet_id" {
-  description = "This subnet connects app service to the subnet where PE is connected"
-  type = string
-}
