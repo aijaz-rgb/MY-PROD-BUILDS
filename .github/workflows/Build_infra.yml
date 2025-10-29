@@ -13,7 +13,7 @@ on:
         options:
           - dev
           - prod # Add other environments here as they are created
-          
+      
       # 2. Input for selecting the branch to run against
       branch:
         description: 'Branch to run against (e.g., main or feature branch)'
@@ -24,18 +24,20 @@ on:
 # Defines a single job named 'terraform'
 jobs:
   terraform:
-    name: 'Terraform Plan & Apply (${{ github.event.inputs.environment }})'
+    name: 'Terraform Plan & Apply'
     runs-on: ubuntu-latest
     
-    # 1. Define Environment Variables (including the dynamic directory path)
+    # Set the working directory dynamically based on user input
+    defaults:
+      run:
+        working-directory: environments/${{ github.event.inputs.environment }}
+
+    # Map the GitHub Secrets to environment variables for authentication
     env:
       ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
       ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-      
-      # NEW: Define the dynamic directory path as an environment variable
-      ENV_DIR: environments/${{ github.event.inputs.environment }}
 
     steps:
       # 1. Checkout the specific branch selected by the user
@@ -44,29 +46,28 @@ jobs:
         with:
           ref: ${{ github.event.inputs.branch }}
 
-      # 2. Setup Terraform CLI (No working-directory needed here)
+      # 2. Setup Terraform CLI
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.6.x
 
-      # 3. Terraform Init (Initializes backend from the target directory)
+      # 3. Terraform Init (Initializes backend based on the working-directory)
       - name: Terraform Init
         id: init
-        # Apply the working-directory to this step using the ENV_DIR variable
-        working-directory: ${{ env.ENV_DIR }}
         run: terraform init
 
-      # 4. Terraform Plan (Saves the plan artifact from the target directory)
+      # 4. Terraform Plan (Saves the plan artifact)
       - name: Terraform Plan
         id: plan
-        # Apply the working-directory to this step
-        working-directory: ${{ env.ENV_DIR }}
         run: terraform plan -no-color -out=tfplan -lock-timeout=15m
         continue-on-error: true
 
-      # 5. Conditional Apply Step (Runs apply from the target directory)
+      # 5. Conditional Apply Step (Requires human approval/verification)
       - name: Terraform Apply
-        # Apply the working-directory to this step
-        working-directory: ${{ env.ENV_DIR }}
+        # IMPORTANT: The 'if' condition is set to 'always()' here because manual workflows 
+        # often rely on a human reviewing the plan output BEFORE approving the Apply.
+        # However, for true automated "Apply" you should use a separate CI/CD trigger 
+        # or require a GitHub Environment Approval rule.
         run: terraform apply -auto-approve tfplan
+        
